@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         AVA Notification b0.4
+// @name         AVANotification r1.0
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  try to take over the world!
 // @author       Esteban Reyes
 // @inject-into auto
@@ -13,7 +13,8 @@
 (function() {
     'use strict';
     function main() {
-        // Your script logic goes here
+        // Audio Context constructor https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
+         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         // Select the node that will be observed for mutations
         const targetNode = document.querySelectorAll('.col')[3];
         // Notification Interval ID
@@ -57,16 +58,23 @@
                 intervalID;
             }
         }
+        // Notification Sound using audioContext using a robotic rhyrhm pattern
         function playSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-
-            oscillator.type = "square"; // Use a square wave for a robotic sound
-            oscillator.frequency.setValueAtTime(500, audioContext.currentTime); // Adjust the frequency
-            oscillator.connect(audioContext.destination);
-
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.1); // Adjust the duration (0.1 seconds)
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.5;
+            gainNode.connect(audioContext.destination);
+            // Robitic Pattern
+            const roboticRhythmPattern = [0,0.1,0.3];
+            roboticRhythmPattern.forEach((time, index) => {
+                const oscillator = audioContext.createOscillator();
+                oscillator.type = 'sawtooth';
+                oscillator.connect(gainNode);
+                // Alternating between two frequencies
+                const frequency = index % 2 === 0 ? 400 : 800;
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.start(audioContext.currentTime + time);
+                oscillator.stop(audioContext.currentTime + time + 0.1);
+            });
         }
     }
 
