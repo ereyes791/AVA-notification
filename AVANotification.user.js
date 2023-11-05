@@ -64,7 +64,7 @@
             gainNode.gain.value = 0.5;
             gainNode.connect(audioContext.destination);
             // Robitic Pattern
-            const roboticRhythmPattern = [0,0,0.1];
+            const roboticRhythmPattern = [0,0.2,0.3];
             roboticRhythmPattern.forEach((time, index) => {
                 const oscillator = audioContext.createOscillator();
                 oscillator.type = 'sawtooth';
