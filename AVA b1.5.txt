@@ -1,0 +1,77 @@
+function createNotification(notificationData) {
+  // Check if the browser supports the Notification API
+  if ('Notification' in window) {
+    // Request permission for notifications
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        // Create a notification with title and subtitle
+        const { title, subtitle } = notificationData;
+        const notification = new Notification(title, {
+          body: subtitle,
+    icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA2UlEQVQ4T2NkoBAwouv/9uv3f5AYE5D88/cvw9+//xjY2VjByv4BVXOxsaLowTDgWVko2ADOO+cZ/nD8Zfj2loHh68t/DC/FDMCGOO7aOFQM4Lp7luEPOwPDl7f/GL69ZAB6QZ84LyQs/AAOg6cf/oI1PH3/G0w/+wQJ7g99EvjDYBgYsOViHzgMvjO9YGBmFWC4/v4lw9lPbxjefBYBh8GhkIn4wwBhwCsGJiY+hhufXjGc/fya4fVHYQZGRsYBNODvZxWG9/8/EHYBLDPBMhRyZiMqM5GauwEUPbQRcb65ZgAAAABJRU5ErkJggg==',
+// https://prod-na.ava.robotics.amazon.dev/favicon.ico
+        });
+        
+        // Handle notification click (if needed)
+        notification.onclick = function(event) {
+          // Handle notification click
+          // event.target refers to the notification itself
+          console.log('Notification clicked');
+        };
+      } else {
+        console.log('Permission for notifications denied.');
+      }
+    });
+  } else {
+    console.log('Notification API not supported.');
+  }
+}
+
+/// check mutations 
+function initializeObserver(targetClass) {
+  let observedElement = null; // Variable to store the found element
+
+  // Select the body element or any other element you want to observe
+  const targetNode = document.querySelector('body');
+
+  // Create a MutationObserver instance
+  const observer = new MutationObserver(mutationsList => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        // Iterate through added nodes to check for the target class
+        mutation.addedNodes.forEach(node => {
+          // Check if the added node or its descendants have the target class
+          if (node instanceof HTMLElement && node.classList.contains(targetClass)) {
+            observedElement = node; // Save the found element
+            console.log(`Found element with class "${targetClass}"`, node);
+            // You can perform additional actions here with the found element
+          }
+        });
+      }
+    }
+  });
+
+  // Configuration of the observer
+  const config = { childList: true, subtree: true };
+
+  // Start observing the target node with the specified configuration
+  observer.observe(targetNode, config);
+
+  // Return a function to stop the observer and retrieve the observed element
+  return {
+    stop: function() {
+      observer.disconnect(); // Stop the observer
+    },
+    getObservedElement: function() {
+      return observedElement; // Retrieve the observed element
+    }
+  };
+}
+
+// Example usage:
+const targetClass = 'example-class';
+const observer = initializeObserver(targetClass);
+
+// To stop observing and get the observed element:
+// observer.stop(); // Call this when you want to stop observing
+// const observedElement = observer.getObservedElement(); // Retrieve the observed element
