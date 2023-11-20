@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         AVANotification r1.0
+// @name         AVANotification b2.0
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      2.0
 // @description  try to take over the world!
 // @author       Esteban Reyes
 // @inject-into auto
