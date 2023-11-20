@@ -34,7 +34,7 @@
   const config2 = { childList: true, subtree: true };
 
   // Start observing the target node with the specified configuration
-  observer.observe(targetBody, config2);
+  observer1.observe(targetBody, config2);
 
         // Audio Context constructor https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
