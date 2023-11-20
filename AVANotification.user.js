@@ -13,6 +13,29 @@
 (function() {
     'use strict';
     function main() {
+        // Tracking red labels
+        // Select the body element or any other element you want to observe
+  const targetBody = document.querySelector('body');
+
+  // Create a MutationObserver instance
+  const observer1 = new MutationObserver(mutationsList => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        // Iterate through added nodes to check for the target class
+        mutation.addedNodes.forEach(node => {
+          // Check if the added node or its descendants have the target class
+            console.log(node);
+        });
+      }
+    }
+  });
+
+  // Configuration of the observer
+  const config2 = { childList: true, subtree: true };
+
+  // Start observing the target node with the specified configuration
+  observer.observe(targetBody, config2);
+
         // Audio Context constructor https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         // Select the node that will be observed for mutations
