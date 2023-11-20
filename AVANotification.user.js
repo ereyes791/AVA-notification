@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         AVANotification b2.0
+// @name         AVANotification r2.0
 // @namespace    http://tampermonkey.net/
 // @version      2.0
 // @description  try to take over the world!
